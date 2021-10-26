@@ -11,12 +11,12 @@ const jwt = require("jsonwebtoken");
  * @param {*} next 
  * @returns 
  */
-const validateJWT = (req, res, next) => {
+const authorizationJWT = (req, res, next) => {
 
-    const authorizationHeaader = req.headers.authorization;
+    const authorizationHeader = req.headers.authorization;
     let result;
-    if (authorizationHeaader) {
-        const token = req.headers.authorization.split(' ')[1]; // Bearer <token>
+    if (authorizationHeader) {
+        const token = authorizationHeader.split(' ')[1]; // Bearer <token>
         const options = {
             expiresIn: '2d',
         }
@@ -26,7 +26,6 @@ const validateJWT = (req, res, next) => {
             next();
         } catch (err) {
             return res.status(500).json({
-                Error: err,
                 message: 'Something wrong with verification'
             })
         }
@@ -41,5 +40,5 @@ const validateJWT = (req, res, next) => {
 }
 
 module.exports = {
-    validateJWT: validateJWT
+    authorizationJWT
 }

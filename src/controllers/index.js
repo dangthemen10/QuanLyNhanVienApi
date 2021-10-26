@@ -26,7 +26,8 @@ const register = async (req, res) => {
             await service.createUser(req.body.email, hashPassword);
 
             return res.status(200).json({
-                message: `Success`
+                message: `Success`,
+                authorizationJWT: hashPassword,
             });
 
         }

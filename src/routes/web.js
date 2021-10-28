@@ -10,7 +10,7 @@ const route = app => {
     router.get('/', home.getHomepage);
     router.post('/register', home.register);
     router.post('/login', home.login);
-    router.get('/list', auth.authorizationJWT, home.getInfoEmployees);
+    router.get('/list', home.getInfoEmployees);
 
     //department, add(auth.authorizationJWT)
     router.use(require('./department'))

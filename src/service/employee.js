@@ -19,6 +19,7 @@ const { getOneProject } = require('./project');
 const getAllEmployee = async () => {
     let result = await Employee.findAll({
         attributes: {
+            include: ['Department.deptName', 'Group.groupName', 'Project.projectName'],
             exclude:[
                 'departmentId', 'DepartmentId', 
                 'groupId', 'GroupId', 
@@ -201,7 +202,13 @@ const deleteEmployee = async employeeId => {
     let employee = await getOneEmployee(employeeId);
 
     if (employee) {
-        await Employee.destroy(employee);
+        await Employee.destroy({
+            where: {
+                id: {
+                    [Op.eq]: employeeId
+                }
+            } 
+        });
     }
 
     return await getAllEmployee();
@@ -210,6 +217,7 @@ const deleteEmployee = async employeeId => {
 const filterEmployeesByDepartment = async name => {
     let result = await Employee.findAll({
         attributes: {
+            include: ['Department.deptName'],
             exclude:[
                 'DepartmentId', 'GroupId','ProjectId',
             ]
@@ -224,11 +232,12 @@ const filterEmployeesByDepartment = async name => {
                 },
                 where:{
                     deptName: {
-                        [Op.like]: name
+                        [Op.like]: '%'+name+'%'
                     }
                 }
             }
-        ]
+        ],
+        raw: true
     });
     return result;
 }

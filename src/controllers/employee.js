@@ -75,7 +75,7 @@ const updateEmployee = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
     try {
-        let result = await employeeService.deleteEmployee(req.body.id);
+        let result = await employeeService.deleteEmployee(req.params.id);
 
         return res.status(200).json({
             data: result
